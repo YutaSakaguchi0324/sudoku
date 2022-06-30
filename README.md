@@ -13,6 +13,6 @@ gurobipy 9.5.1
 .(ドット)や数字を自由に書き換えて実行することで、その問題の解をnumpy.ndarrayで出力します。
 
 変数s
-
+![スクリーンショット (20)](https://user-images.githubusercontent.com/108399244/176651104-b50c96be-b961-4279-aec9-89d8e27dbca4.png)
 
 
