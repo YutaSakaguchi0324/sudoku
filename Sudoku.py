@@ -28,7 +28,7 @@ s = ('. . 5 |3 . . |. . . '
 data = re.sub(r'[^\d.]','',s) # 数字とドット以外を削除
 
 # 問題を設定
-sudoku = gp.Model(name = "GurobiSample1")
+sudoku = gp.Model(name = "Sudoku")
 
 #　変数を格納する三次元配列を生成する
 X = [[[0]*N for i in range(N)] for j in range(N)]
@@ -50,24 +50,25 @@ for i in range(N):
 sudoku.setObjective(0, sense = gp.GRB.MINIMIZE)
 
 # 制約を設定
-#同じマスに入る数字は一つだけ
+# 一つのマスに入る数字は一つだけ
 for i in range(N):
     for j in range(N):
         sum_list = [X[i][j][k] for k in range(N)]
         sudoku.addConstr(sum(sum_list) == 1, name = "number" + str(i) + str(j) + str(k))
         
-#横の制約
+# 同じ行に入る数字は一つだけ
 for i in range(N):
     for k in range(N):
         sum_list = [X[i][j][k] for j in range(N)]
         sudoku.addConstr(sum(sum_list) == 1, name = "horizontal" + str(i) + str(j) + str(k))
-#縦の制約
+
+# 同じ列に入る数字は一つだけ
 for j in range(N):
     for k in range(N):
         sum_list = [X[i][j][k] for i in range(N)]
         sudoku.addConstr(sum(sum_list) == 1, name = "vertical" + str(i) + str(j) + str(k))
         
-#正方形の制約
+# 3×3のマスに入る数字は一つだけ
 for i1 in range(n):
     for j1 in range(n):
             for k in range(N):
@@ -80,16 +81,16 @@ sudoku.optimize()
 # 最適解が得られた場合、結果を出力
 if sudoku.Status == gp.GRB.OPTIMAL:
     # 解の値をndarrayに変換する
-    square = np.zeros((N, N))
+    solution = np.zeros((N, N))
     for i in range(N):
         for j in range(N):
             for k in range(N):
                 opt = X[i][j][k]
                 if type(opt) == int:
                     if opt == 1:
-                        square[i, j] = k+1
+                        solution[i, j] = k+1
                 else:
                     if opt.X == 1:
-                        square[i, j] = k+1
+                        solution[i, j] = k+1
                     
-    print(square)
+    print(solution)
