@@ -69,11 +69,11 @@ for j in range(N):
         sudoku.addConstr(sum(sum_list) == 1, name = "vertical" + str(i) + str(j) + str(k))
         
 # 3×3のマスに入る数字は一つだけ
-for i1 in range(n):
-    for j1 in range(n):
+for i in range(n):
+    for j in range(n):
             for k in range(N):
-                sum_list = [X[n*i1+i2][n*j1+j2][k] for i2 in range(n) for j2 in range(n)]
-                sudoku.addConstr(sum(sum_list) == 1, name = "square" + str(i1) + str(j1) + str(k))
+                sum_list = [X[n*i+p][n*j+q][k] for p in range(n) for q in range(n)]
+                sudoku.addConstr(sum(sum_list) == 1, name = "square" + str(i) + str(j) + str(k))
         
 # 解を求める計算
 sudoku.optimize()
